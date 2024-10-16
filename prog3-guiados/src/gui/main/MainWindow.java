@@ -2,6 +2,12 @@ package gui.main;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,14 +17,16 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ListModel;
 
 import domain.Athlete;
 import domain.Athlete.Genre;
-import tema3.tema3A.Person;
-import tema3.tema3A.EjemploModeloJList.MyListModel;
 
 public class MainWindow extends JFrame{
 
@@ -28,7 +36,7 @@ public class MainWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	public MainWindow() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("JJ.OO. París 2024");
 		setSize(640, 480);
 		setLocationRelativeTo(null);
@@ -63,16 +71,60 @@ public class MainWindow extends JFrame{
 		DefaultListModel<Athlete> listmodel = new DefaultListModel<Athlete>();
 		listmodel.addAll(atletas);
 		JList<Athlete> lista = new JList<Athlete>(listmodel);
+		lista.setFixedCellWidth(200);
+		lista.setCellRenderer(new AthleteListCellRenderer());
 		JScrollPane scroll = new JScrollPane(lista);
-		scroll.setPreferredSize(new Dimension(200, NORMAL));
 		add(scroll, BorderLayout.WEST);
-		
 		JTabbedPane tabbed = new JTabbedPane();
 		tabbed.add("Datos", null);
 		tabbed.add("Medallas", null);
 		add(tabbed);
-		setVisible(true);
+		JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+        JMenu fileMenu = new JMenu("Fichero");
+        menuBar.add(fileMenu);
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+        JMenuItem openMenuItem = new JMenuItem("Nuevo atleta...");
+        fileMenu.add(openMenuItem);
+        openMenuItem.setMnemonic(KeyEvent.VK_N);
+        fileMenu.addSeparator();
+        JMenuItem importMenuItem = new JMenuItem("Importar...");
+        fileMenu.add(importMenuItem);
+        importMenuItem.setMnemonic(KeyEvent.VK_I);
+        JMenuItem exportMenuItem = new JMenuItem("Exportar...");
+        fileMenu.add(exportMenuItem);
+        exportMenuItem.setMnemonic(KeyEvent.VK_E);
+        fileMenu.addSeparator();
+        JMenuItem exitMenuItem = new JMenuItem("Salir");
+        fileMenu.add(exitMenuItem);
+        exitMenuItem.setMnemonic(KeyEvent.VK_S);
+        exitMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				confirmarSalida();
+			}
+        });
+        addWindowListener(new WindowAdapter() {
+        	@Override
+        	public void windowClosing(WindowEvent e) {
+        		confirmarSalida();
+        	}
+        });
+        setVisible(true);
 	}
+	private void confirmarSalida() {
+        int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Seguro que desea salir?",
+                "Salir",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }
 	
 	
 }
