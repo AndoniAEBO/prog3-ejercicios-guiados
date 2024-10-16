@@ -6,7 +6,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import domain.Athlete;
+import gui.Athlete;
 
 public class AthleteListCellRenderer extends DefaultListCellRenderer{
 

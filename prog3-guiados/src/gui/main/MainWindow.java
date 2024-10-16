@@ -25,8 +25,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ListModel;
 
-import domain.Athlete;
-import domain.Athlete.Genre;
+import gui.Athlete;
+import gui.Athlete.Genre;
 
 public class MainWindow extends JFrame{
 
