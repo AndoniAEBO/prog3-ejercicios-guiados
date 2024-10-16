@@ -1,4 +1,4 @@
-package domain;
+package gui;
 import java.time.LocalDate;
 
 /**
